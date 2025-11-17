@@ -15,7 +15,10 @@ namespace Business
 
         public Character GetCharacter(int id)
         {
-            return _dataConnection.GetCharacter(id);
+            Character character = _dataConnection.GetCharacter(id);
+            character.Stats = _dataConnection.GetStatsForCharacter(id);
+
+            return character;
         }
     }
 }
