@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Business;
+using Business.Interfaces;
+using DataAccess;
+using DataAccess.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.ComponentModel;
@@ -11,6 +15,8 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IContainer, Container>();
+builder.Services.AddTransient<ICharacterProvider, CharacterProvider>();
+builder.Services.AddTransient<ICharacterDataConnection, CharacterDataConnection>();
 
 var app = builder.Build();
 app.UseSwagger();

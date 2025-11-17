@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="Business/Business.csproj" Id="ccc773b5-22e0-4b2b-82b8-2c9435bdea29" />
+  <Project Path="DataAccess/DataAccess.csproj" Id="886072d2-d920-4eee-97c0-a6ae3cc68f5e" />
+  <Project Path="DataContracts/DataContracts.csproj" Id="76b7866c-c7d8-4df6-9852-301d60c68051" />
   <Project Path="DnDCharacterSheet/DnDCharacterSheet.csproj" />
 </Solution>
