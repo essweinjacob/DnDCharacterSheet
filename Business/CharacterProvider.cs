@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using DataAccess.Interfaces;
+using DataAccess.DAOs;
 using DataContracts;
 
 namespace Business
@@ -15,8 +16,15 @@ namespace Business
 
         public Character GetCharacter(int id)
         {
-            Character character = _dataConnection.GetCharacter(id);
-            character.Stats = _dataConnection.GetStatsForCharacter(id);
+            CharacterDetails characterDetails = _dataConnection.GetCharacterDetails(id);
+            IEnumerable<Stat> Stats = _dataConnection.GetStatsForCharacter(id);
+            IEnumerable<Item> Inventory = _dataConnection.GetItemsForCharacter(id);
+            Character character = new Character
+            {
+                CharacterDetails = characterDetails,
+                Stats = Stats,
+                Inventory = Inventory
+            };
 
             return character;
         }
