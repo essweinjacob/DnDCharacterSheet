@@ -1,4 +1,4 @@
-﻿namespace DataContracts
+﻿namespace DataAccess
 {
     public enum StatType
     {

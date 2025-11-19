@@ -1,6 +1,5 @@
 ﻿using DataAccess.DAOs;
 using DataAccess.Interfaces;
-using DataContracts;
 
 namespace DataAccess
 {
@@ -19,25 +18,25 @@ namespace DataAccess
             };
         }
 
-        public IEnumerable<Stat> GetStatsForCharacter(int id)
+        public IEnumerable<BaseStat> GetStatsForCharacter(int id)
         {
-            return new List<Stat>()
+            return new List<BaseStat>()
             {
-                new Stat() { StatType = StatType.Strength, Value = 10 },
-                new Stat() { StatType = StatType.Dexterity, Value = 10 },
-                new Stat() { StatType = StatType.Constitution, Value = 10 },
-                new Stat() { StatType = StatType.Intelligence, Value = 10 },
-                new Stat() { StatType = StatType.Wisdom, Value = 10 },
-                new Stat() { StatType = StatType.Charisma, Value = 10 },
+                new BaseStat() { StatType = StatType.Strength, Value = 10 },
+                new BaseStat() { StatType = StatType.Dexterity, Value = 10 },
+                new BaseStat() { StatType = StatType.Constitution, Value = 10 },
+                new BaseStat() { StatType = StatType.Intelligence, Value = 10 },
+                new BaseStat() { StatType = StatType.Wisdom, Value = 10 },
+                new BaseStat() { StatType = StatType.Charisma, Value = 10 },
             };
         }
 
-        public IEnumerable<Item> GetItemsForCharacter(int id)
+        public IEnumerable<ItemDetails> GetItemsForCharacter(int id)
         {
-            return new List<Item>()
+            return new List<ItemDetails>()
             {
-                new Item() { ItemId = 1, Name = "Short Sword", Description = "A basic short sword.", Quantity = 1 },
-                new Item() { ItemId = 2, Name = "Health Potion", Description = "Restores 10 HP.", Quantity = 3 },
+                new ItemDetails() { ItemId = 1, Name = "Short Sword", Description = "A basic short sword.", Quantity = 1 },
+                new ItemDetails() { ItemId = 2, Name = "Health Potion", Description = "Restores 10 HP.", Quantity = 3 },
             };
         }
     }

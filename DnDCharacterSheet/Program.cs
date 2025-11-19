@@ -16,7 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IContainer, Container>();
 builder.Services.AddTransient<ICharacterProvider, CharacterProvider>();
+builder.Services.AddTransient<IItemProvider, ItemProvider>();
 builder.Services.AddTransient<ICharacterDataConnection, CharacterDataConnection>();
+builder.Services.AddTransient<IItemDataConnection, ItemDataConnection>();
 
 var app = builder.Build();
 app.UseSwagger();
