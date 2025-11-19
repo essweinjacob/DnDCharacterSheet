@@ -13,7 +13,8 @@ namespace Business
 
         public CharacterProvider(
             ICharacterDataConnection dataConnection,
-            IItemProvider itemProvider)
+            IItemProvider itemProvider
+        )
         {
             _dataConnection = dataConnection;
             _itemProvider = itemProvider;
@@ -23,40 +24,39 @@ namespace Business
         {
             CharacterDetails characterDetails = _dataConnection.GetCharacterDetails(id);
             IEnumerable<BaseStat> stats = _dataConnection.GetStatsForCharacter(id);
-            IEnumerable<ItemDetails> itemDetails = _dataConnection.GetItemsForCharacter(id);
-            IEnumerable<ItemModifier> itemModifiers = _itemProvider.GetItemModifiers(itemDetails.Select(_ => _.ItemId).ToList());
+            IEnumerable<ItemQuantity> characterItems = _dataConnection.GetCharacterItems(id);
+            IEnumerable<Item> items = _itemProvider.GetItems(characterItems);
             Character character = new Character
             {
                 CharacterDetails = characterDetails,
-                Stats = CalculateStats(stats, itemModifiers),
-                Inventory = GetItems(itemDetails, itemModifiers)
+                Stats = CalculateStats(stats, items),
+                Inventory = items
             };
 
             return character;
         }
 
-        private IEnumerable<Stat> CalculateStats(IEnumerable<BaseStat> baseStats, IEnumerable<ItemModifier> items)
+        private IEnumerable<Stat> CalculateStats(IEnumerable<BaseStat> baseStats, IEnumerable<Item> items)
         {
             var baseStatsList = baseStats.ToList();
-            var itemsList = items.ToList();
 
             return new List<Stat>()
             {
-                CreateStat(StatType.Strength, baseStatsList, itemsList),
-                CreateStat(StatType.Dexterity, baseStatsList, itemsList),
-                CreateStat(StatType.Constitution, baseStatsList, itemsList),
-                CreateStat(StatType.Intelligence, baseStatsList, itemsList),
-                CreateStat(StatType.Wisdom, baseStatsList, itemsList),
-                CreateStat(StatType.Charisma, baseStatsList, itemsList),
+                CreateStat(StatType.Strength, baseStatsList, items),
+                CreateStat(StatType.Dexterity, baseStatsList, items),
+                CreateStat(StatType.Constitution, baseStatsList, items),
+                CreateStat(StatType.Intelligence, baseStatsList, items),
+                CreateStat(StatType.Wisdom, baseStatsList, items),
+                CreateStat(StatType.Charisma, baseStatsList, items),
             };
         }
 
-        private Stat CreateStat(StatType statType, List<BaseStat> baseStats, List<ItemModifier> items)
+        private Stat CreateStat(StatType statType, IEnumerable<BaseStat> baseStats, IEnumerable<Item> items)
         {
             var baseStat = baseStats.FirstOrDefault(_ => _.StatType == statType);
-            var itemModifiers = items.Where(_ => _.StatType == statType).ToList();
+            var itemModifiers = items.SelectMany(_ => _.StatModifiers).Where(_ => _.StatType == statType).ToList();
             var bonusValue = itemModifiers.Sum(_ => _.BonusValue);
-             var bonusExplanations = itemModifiers.Select(_ => $"Item Bonus: {_.BonusValue}");
+            var bonusExplanations = itemModifiers.Select(_ => $"Item Bonus: {_.BonusValue}");
             var explanation = $"Base : {baseStat?.Value}" + (bonusExplanations.Any() ? ", " + string.Join(", ", bonusExplanations) : string.Empty);
 
             return new Stat()
@@ -65,24 +65,6 @@ namespace Business
                 Value = (baseStat?.Value ?? 0) + bonusValue,
                 Explanation = explanation
             };
-        }
-
-        private IEnumerable<Item> GetItems(IEnumerable<ItemDetails> itemDetails, IEnumerable<ItemModifier> itemModifiers)
-        {
-            var inventory = new List<Item>();
-            itemDetails.ToList().ForEach(item =>
-            {
-                inventory.Add(new Item
-                {
-                    ItemId = item.ItemId,
-                    Name = item.Name,
-                    Description = item.Description,
-                    Quantity = item.Quantity,
-                    StatModifiers = itemModifiers.Where(_ => _.ItemId == item.ItemId).ToList()
-                });
-            });
-
-            return inventory;
         }
     }
 }
