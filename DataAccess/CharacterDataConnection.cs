@@ -16,28 +16,55 @@ namespace DataAccess
                 Class = "Sorcerrer",
                 SubClass = "Wild Magic"
             };
+            /* Table Design
+             * Name: Characters
+             * Columns:
+             * [CharacterId] INT PRIMARY KEY,
+             * [Name] NVARCHAR(25) NOT NULL,
+             * [Level] INT NOT NULL,
+             * [Race] NVARCHAR(25) NOT NULL,
+             * [Class] NVARCHAR(25) NOT NULL,
+             * [SubClass] NVARCHAR(25) NULL
+             */
         }
 
         public IEnumerable<BaseStat> GetStatsForCharacter(int id)
         {
             return new List<BaseStat>()
             {
-                new BaseStat() { StatType = StatType.Strength, Value = 10 },
-                new BaseStat() { StatType = StatType.Dexterity, Value = 10 },
-                new BaseStat() { StatType = StatType.Constitution, Value = 10 },
-                new BaseStat() { StatType = StatType.Intelligence, Value = 10 },
-                new BaseStat() { StatType = StatType.Wisdom, Value = 10 },
-                new BaseStat() { StatType = StatType.Charisma, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Strength, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Dexterity, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Constitution, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Intelligence, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Wisdom, Value = 10 },
+                new BaseStat() { CharacterId = 1, StatType = StatType.Charisma, Value = 10 },
             };
+            /* Table Design
+             * Name: CharacterStats
+             * Columns:
+             * [CharacterId] INT FOREIGN KEY REFERENCES Characters(CharacterId),
+             * [StatType] INT NOT NULL,
+             * [Value] INT NOT NULL,
+             * PRIMARY KEY (CharacterId, StatType)
+             */
         }
 
-        public IEnumerable<ItemDetails> GetItemsForCharacter(int id)
+        public IEnumerable<ItemQuantity> GetCharacterItems(int id)
         {
-            return new List<ItemDetails>()
+            return new List<ItemQuantity>()
             {
-                new ItemDetails() { ItemId = 1, Name = "Short Sword", Description = "A basic short sword.", Quantity = 1 },
-                new ItemDetails() { ItemId = 2, Name = "Health Potion", Description = "Restores 10 HP.", Quantity = 3 },
+                new ItemQuantity() { ItemId = 1, Quantity = 1 },
+                new ItemQuantity() { ItemId = 2, Quantity = 3 },
             };
+            /*
+             * Table Design
+             * Name: CharacterItems
+             * Columns:
+             * [CharacterId] INT FOREIGN KEY REFERENCES Characters(CharacterId),
+             * [ItemId] INT FOREIGN KEY REFERENCES Items(ItemId),
+             * [Quantity] INT NOT NULL,
+             * PRIMARY KEY (CharacterId, ItemId)
+             */
         }
     }
 }

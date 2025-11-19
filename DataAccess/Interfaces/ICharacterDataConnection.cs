@@ -6,6 +6,6 @@ namespace DataAccess.Interfaces
     {
         CharacterDetails GetCharacterDetails(int id);
         IEnumerable<BaseStat> GetStatsForCharacter(int id);
-        IEnumerable<ItemDetails> GetItemsForCharacter(int id);
+        IEnumerable<ItemQuantity> GetCharacterItems(int id);
     }
 }

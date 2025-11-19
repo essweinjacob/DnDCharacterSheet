@@ -1,9 +1,10 @@
 ﻿using DataAccess.DAOs;
+using DataContracts;
 
 namespace Business.Interfaces
 {
     public interface IItemProvider
     {
-        IEnumerable<ItemModifier> GetItemModifiers(IEnumerable<int> itemIds);
+        IEnumerable<Item> GetItems(IEnumerable<ItemQuantity> itemQuantities);
     }
 }
